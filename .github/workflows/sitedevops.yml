@@ -1,0 +1,74 @@
+name: deploiement docusaurus github page 
+
+on: [push, workflow_dispatch]
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        steps:
+        - name: test
+          run: date
+
+        - name: install nodejs
+          uses: actions/setup-node@v4
+          with:
+            node-version: 20.1
+
+        - name: checkout
+          uses: actions/checkout@v4
+
+        - name: docu
+          run: npm install docusaurus
+
+        - name: build test
+          run: npm run build 
+
+        - name: artifact upload
+          uses: actions/upload-artifact@v4
+          with:
+            name: site
+            path: build/
+
+    deploiement:
+        runs-on: ubuntu-latest
+        permissions:
+            pages: write     
+            id-token: write 
+        environment:
+                name: github-pages
+                url: ${{ steps.deployment.outputs.page_url }}
+        steps:
+        - name: test
+          run: date
+
+        - name: artifact download
+          uses: actions/download-artifact@v4
+          with: 
+            name: site
+
+        - name: ls et creer dossier _site
+          run: |
+              ls -alh
+              mkdir _site
+              ls
+  
+        - name: deplacer dans _site en html
+          run: |          
+              mv $(ls --ignore=_site) _site/
+              ls _site
+
+        - name: Fix permissions
+          run: |
+            chmod -c -R +rX "_site/" | while read line; do
+              echo "::warning title=Invalid file permissions automatically fixed::$line"
+            done
+    
+        - name: upload-pages-artifac
+          uses: actions/upload-pages-artifact@v3 
+              
+        - name: Deploy to GitHub Pages
+          id: deployment
+          uses: actions/deploy-pages@v4
+            
+        needs: build
+    
