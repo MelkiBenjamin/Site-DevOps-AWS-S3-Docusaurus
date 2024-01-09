@@ -87,9 +87,10 @@ runs-on: selft-hosted
 ```
 
 - variables: ```bash '${{ variable.salutation }}'``` dans github salutation: bonjour
- on peut declarer une variable dans 3 endroits. apres le ```bash on ``` au debut, apres le ```bash runs-on ```, dans les steps e(étape). 
+ on peut declarer une variable dans 3 endroits. apres le ```bash on ``` au debut, apres le ```bash runs-on ```, dans les steps (étape). 
 
-Il existe des variable predefini (deja creer que l'on peut reprendre)
+Il existe des variable predefinis (deja créer que l'on peut reprendre) quel l'on peut 
+retouver sur https://docs.github.com/fr/github-ae@latest/actions/learn-github-actions/variables#default-environment-variables
 
 artifact : action interessante si on veut envoyer un fichier ou dossier dans un autre job entre un ubuntu-latest et un self-hosted, le cloud github et sont pc) sinon pour meme job utilisé cp.
 artifact-upload et artifact download
@@ -143,8 +144,7 @@ deploiement:
             
         needs: build
 ```
-variable:
-environment
+variable d'environment
 config
 
 actions pour login pour github (ghcr) et dockerhub
