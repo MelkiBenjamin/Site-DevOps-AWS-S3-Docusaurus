@@ -189,3 +189,23 @@ env:
     test: ghcr.io/o-clock-hati/cowsayvache
     test2: ghcr.io
 ```
+
+matrix
+
+il permet de tester des image pour vois le fonctionnement avec des version ubuntu windows ou version de programme. il creer pliseur job pour les tests.
+
+```bash
+jobs:
+    job1:
+        runs-on: self-hosted
+        steps:
+        - name: date
+          run: date
+
+        - name: install cowsay
+          run: echo '${{ secrets.SUDO_PASSWORD }}' | sudo -S apt install -y cowsay
+
+        - name: cowsay envoyer dans fichier
+          run: cowsay est le commit ${{ GITHUB.SHA }} >> /home/student/cow.txt
+```bash
+
