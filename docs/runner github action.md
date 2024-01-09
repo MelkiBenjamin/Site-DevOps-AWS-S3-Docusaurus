@@ -1,3 +1,6 @@
+---
+sidebar_position: 6
+---
 
 -----------processus pour mettre en place un workflow github action :-----------
 
