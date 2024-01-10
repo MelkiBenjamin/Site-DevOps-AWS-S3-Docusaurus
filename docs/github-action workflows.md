@@ -1,5 +1,7 @@
 github action
 
+## Definition
+
 C'est un formidable outil pour automatiser par un workflows la construction et le deploiement d'aplication ou de site.
 
 Le workflows se fait dans .github/workflows/main.yml qu'ils faut creer. On met le nom le plus parlant en .yml.
@@ -18,8 +20,11 @@ jobs:
           run: date
 ```
 
-explication:
-- on: comment executer le worflows. peut s'afficher en ligne ou en liste
+Explication de ce runner.
+
+## on 
+
+Comment executer le worflows. peut s'afficher en ligne ou en liste
 
 En liste:
 
@@ -34,11 +39,19 @@ en ligne
 on: [push, workflow_dispatch]
 ```
 
-push: a chaque push
-workflow_dispatch: fait aparaitre un bouton sur le site github pour l'ancer quand et                          conbien on veut de fois le workflows.
+## on: push: 
 
-On peut faire qu'il s'execute dans le temps par des schedule. Cela reprend le Cron sur linux.
+Fait que le workflows s'execute chaque push
 
+## on: workflow_dispatch
+
+Fait aparaitre un bouton sur le site github pour lancer quand et conbien on veut de fois le workflows.
+
+## schedule
+
+On peut faire qu'il s'execute dans le temps par des schedules. Cela reprend le Cron sur linux.
+
+Exemple:
 ```bash
 on:
     schedule:
@@ -46,10 +59,12 @@ on:
 ```
 
 Cette exemple fait que le workflows s'execute tout les hour a 12h00. 
-Attention : il faut prendre en compte le changement d'horaire et le cron ne le prend pas. Il reste toujours en gmt.
+Attention : il faut prendre en compte le changement d'horaire et le cron ne le prend pas. Il reste toujours en GMT.
 utiliser ce site pour aider a faire le cron : https://crontab.guru/examples.html
 
-Il est aussi possible de faire sur une brache precise
+## on avec branche
+
+Il est aussi possible de faire sur une branche precise
 
 ```bash
 on:
@@ -59,11 +74,15 @@ on:
 ```
 on peut aussi faire qu'il s'execute a chaque nouvel issues ou tag creer.
 
-- jobs: constituer de un ou plusieurs job 
-     plusieurs job: par defaut en paralele sinon avec ```bash needs: nomdujob ``` cela fait le 2eme job seulement si le premier est fait. 
+## jobs
+
+Constituer de un ou plusieurs jobs. 
+     plusieurs job: par defaut en paralele sinon avec ```bash needs: nomdujob ``` dansles s cela fait le 2eme job seulement si le premier est fait. 
      ex: build, deploiement
 
-- runs-on: ou s'execute le workflows.
+## runs-on
+
+on repond a ou s'execute le workflows ?
   soit dans le cloud github avec ubuntu windows ou mac.
 
 ```bash
@@ -75,27 +94,106 @@ soit sur notre pc avec run: self-hosted: le fait sur le pc du runner
 ```bash
 runs-on: selft-hosted
 ```
+## steps : 
+Etapes du runner. constiter de run et de on
 
-- steps : etapes du runner.
-- uses: utilise les actions du markeplace github action a privilegier s'il y en a.
-- run: fait la commande bash.
-- secrets: ```bash echo '${{ secrets.SUDO_PASSWORD }}' | sudo -S ``` (mon secret s'appelle SUDO_PASSWORD ici). a faire sur site github et dans le workflows.
+```bash
+- name:
+- uses: 
+```
+
+```bash
+- name:
+- run: 
+```
+
+## Actions
+
+on utilise use pour les mettre en place.
+uses: utilise les actions du markeplace github action a privilegier s'il y en a.
+
+- run: fait la commande bash sur linux ou powersell sur windows.
+
+## secrets: 
+```bash echo '${{ secrets.SUDO_PASSWORD }}' | sudo -S ``` (mon secret s'appelle SUDO_PASSWORD ici). a faire sur site github et dans le workflows.
 
 ```bash
 - name: copy site dans /var/www/html
   run: echo '${{ secrets.SUDO_PASSWORD }}' | sudo -S cp -r /home/benjamin/site/* /var/www/html
 ```
 
-- variables: ```bash '${{ variable.salutation }}'``` dans github salutation: bonjour
- on peut declarer une variable dans 3 endroits. apres le ```bash on ``` au debut, apres le ```bash runs-on ```, dans les steps (étape). 
+## variables: 
+
+```bash 
+'${{ variable.salutation }}'
+``` 
+Cela corresponds dans github a salutation: bonjour
+
+on peut declarer une variable dans 3 endroits. apres le ```bash on ``` au debut, apres le ```bash runs-on ```, dans les steps (étape). 
 
 Il existe des variable predefinis (deja créer que l'on peut reprendre) quel l'on peut 
 retouver sur https://docs.github.com/fr/github-ae@latest/actions/learn-github-actions/variables#default-environment-variables
 
-artifact : action interessante si on veut envoyer un fichier ou dossier dans un autre job entre un ubuntu-latest et un self-hosted, le cloud github et sont pc) sinon pour meme job utilisé cp.
-artifact-upload et artifact download
+## artifact
 
-pour github page docusaurus
+Action interessante si on veut envoyer un fichier ou dossier dans un autre job entre un ubuntu-latest et un self-hosted, (le cloud github et sont pc) ou 2 ubuntu-latest sinon pour un meme job utilisé cp.
+
+Il est constituer d'artifact-upload et artifact download.
+
+exemple:
+
+```bash 
+        - name: artifact upload
+          uses: actions/upload-artifact@v4
+          with:
+            name: site
+            path: site
+
+        - name: artifact download
+          uses: actions/download-artifact@v4
+          with: 
+            name: site
+```
+
+## Matrix
+
+Il permet de tester des images pour voir le fonctionnement avec des versions differente tel que ubuntu et windows ou version de programme. Il creer plusieurs jobs pour les tests.
+
+```bash
+jobs:
+    build:
+        strategy:
+            max-parallel: 2
+            matrix: 
+                version: [3.9, '3.10', 3.11, 3.12]
+                os: [ubuntu-latest, windows-latest]
+        runs-on: ${{ matrix.os }}
+        steps:
+        - name: test
+          run: date
+
+        - name: install python
+          uses: actions/setup-python@v4
+          with:
+            python-version: ${{ matrix.version }}
+```
+
+```bash
+jobs:
+    job1:
+        runs-on: self-hosted
+        steps:
+        - name: date
+          run: date
+
+        - name: install cowsay
+          run: echo '${{ secrets.SUDO_PASSWORD }}' | sudo -S apt install -y cowsay
+
+        - name: cowsay envoyer dans fichier
+          run: cowsay est le commit ${{ GITHUB.SHA }} >> /home/student/cow.txt
+```
+
+Pour github page docusaurus :
 
 ```bash
 deploiement:
@@ -145,7 +243,6 @@ deploiement:
         needs: build
 ```
 variable d'environment
-config
 
 actions pour login pour github (ghcr) et dockerhub
 action pour push dans github (ghcr) et dockerhub
@@ -166,8 +263,7 @@ action pour push dans github (ghcr) et dockerhub
     platforms: linux/amd64
     push: true
 ```
-
-pour info seulement mais utiliser les action en haut.
+Pour info seulement mais utiliser les action en haut.
 
 ```bash
 #        - name: cowsay docker
@@ -190,22 +286,34 @@ env:
     test2: ghcr.io
 ```
 
-matrix
-
-il permet de tester des image pour vois le fonctionnement avec des version ubuntu windows ou version de programme. il creer pliseur job pour les tests.
+## Workflows complet resumer
 
 ```bash
+name: deploiement mkdocs
+on: [push, workflow_dispatch]                     on:
+env:                                                push:             
+  salutation: bonjour comment aller vous ?             branches:
+  test: pour savoir                                    -  main                                      
+
 jobs:
-    job1:
+    build:
+        strategy:
+            max-parallel: 2
+            matrix: 
+                version: [3.9, '3.10', 3.11, 3.12]
+                os: [ubuntu-latest, windows-latest]
+        runs-on: ${{ matrix.os }}
+        steps:
+        - name: test
+          run: date
+
+        - name: test
+          run: echo ${{ env.test }}
+
+    deploiement:
         runs-on: self-hosted
         steps:
         - name: date
-          run: date
-
-        - name: install cowsay
           run: echo '${{ secrets.SUDO_PASSWORD }}' | sudo -S apt install -y cowsay
-
-        - name: cowsay envoyer dans fichier
-          run: cowsay est le commit ${{ GITHUB.SHA }} >> /home/student/cow.txt
-```bash
-
+        need: build
+```

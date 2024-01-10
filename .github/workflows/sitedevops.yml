@@ -1,6 +1,8 @@
 name: deploiement docusaurus github page 
 
-on: [push, workflow_dispatch]
+on:
+  schedule:
+    - cron: '0 19 * * *'
 
 jobs:
     build:
