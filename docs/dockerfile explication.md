@@ -87,8 +87,10 @@ docker push benjaminmelki/cowsay:cowsay-cowsay
 
 ## ghcr github 
 
+```bash
 docker login ${{ env.test2 }} -u ${{ GITHUB.ACTOR }} -p ${{ secrets.GITHUB_TOKEN }}
 docker push ${{ env.test }}
+```
 
 ## docker compose
 
