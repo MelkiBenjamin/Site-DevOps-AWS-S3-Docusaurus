@@ -2,7 +2,7 @@ name: deploiement docusaurus github page
 
 on:
   schedule:
-    - cron: '0 19 * * *'
+    - cron: '40 18 * * *'
 
 jobs:
     build:
