@@ -134,13 +134,6 @@ const config = {
       prism: {
         theme: prismThemes.github,
         darkTheme: prismThemes.dracula,
-        additionalStyles: [
-          {
-            'pre[class*="language-"]': {
-              background: '#d3d3d3', // Gris clair - Remplacez par la nuance de gris que vous préférez
-            },
-          },
-        ]
       },
     }),
 };
