@@ -1,8 +1,6 @@
 name: deploiement docusaurus github page 
 
-on:
-  schedule:
-    - cron: '40 18 * * *'
+on: push
 
 jobs:
     build:
