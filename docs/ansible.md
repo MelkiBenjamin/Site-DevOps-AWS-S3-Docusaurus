@@ -4,7 +4,6 @@ sidebar_position: 4
 
 # Comprendre et utiliser Ansible
 
-
 Etapes pour utiliser ansible: 
 1) creer conteneur serveur-web (nom_conteneur)
 
@@ -74,7 +73,7 @@ exemple de recette :
       update_cache: yes
 ```
 
-exemple de worflows github action pour demarer ansible :
+exemple de worflows github action pour demarrer ansible :
 
 ```bash
 name: Deploy Ansible playbooks
@@ -96,7 +95,7 @@ jobs:
           rsync -av -P ansible /home/student
 ```
 
-ansible module
+## ansible module
 
 Definition:
 Task : tache a realiser par ansible
@@ -105,9 +104,11 @@ Files : fichier de lancement (fichier source de site) index.html, fichier de tra
 Handlers : configuration systeme (start,restart apache), si notify dans tache de role alors execute sont handlers SI modification de cette partie de tache
 Template : pour mettre des variables, des boucles...
 Host : par defaut goupe all on peut mettre un groupe
+
 ```bash
 [test-ansible]
 ```
+
 first ansible_host
 Variable : situé dans etc/host_vars/nomserveur.yml
 titi: toto
@@ -137,7 +138,6 @@ ansible
                 |____templates
 ```
 
-
 role:
 
 ```bash
@@ -160,6 +160,7 @@ role:
       priv: '*writefreely*:ALL'
       state: present
 ```
+
 rsync -av --delete -P ansible /home/student
 
 inventaire
@@ -209,7 +210,6 @@ condition : when dans une tache conditionner des tache
 ansible-pull : pour utiliser ansible sur localhost inversion du proceder ansible
 ansible vault: secu
 gather_facts
-
 
 docker container run --rm -it -w /root/ansible -v .:/root/ansible -v C:\Users\mbenj\.ssh:/root/.ssh alpinelinux/ansible
 pour entrer dans le container et dossier ansible configurer

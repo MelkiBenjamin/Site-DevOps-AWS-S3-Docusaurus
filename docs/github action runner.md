@@ -2,23 +2,29 @@
 sidebar_position: 6
 ---
 
------------processus pour mettre en place un workflow github action :-----------
-
+## -----------Processus pour mettre en place un workflow github action :-----------
+aller dans le depot github, dans les option runner, et creer un runner. pour cela suivre les commende a copier. cela est fesable pour linux windows et mac. 
+pour le service, c'est a faire pour linux seulement car windows il est demander si veut qu'il soit un service.
 Pour relier github à votre serveur vous pouvez mettre en place un Github action, il nécessite deux actions :
 - Cloner votre depot.
 - Installer un runnner sur votre vm serveur relié au dépôt Github concerné en exécutant les instructions depuis l’interface de Github ( Settings → Actions → Runners →New self-hosted runner).
 - Lancer le runner en tant que service avec 
 sudo ./svc.sh install
 
+./run.sh & (docker)
+
 systemctl status nomservice : pour voir le status
 systemctl start actions.runner.O-clock-Hati-challenge-s06-e02-MelkiBenjamin.melkibenjamin-server.service : pour demarer
 systemctl start (nomservice)
 
-juste pour suprimer :
+## juste pour suprimer le service :
+
 1. sudo systemctl disable nom_du_service
 2. sudo systemctl stop nom_du_service
 3. sudo rm /etc/systemd/system/nom_du_service.service
 4. sudo systemctl daemon-reload
+
+## Autres
 
 service
 systemctl
@@ -33,7 +39,8 @@ journalctl -u apache2
 ss (affiche les port ouvert (80: apache))
 ss -nplt
 
-Diagnostiquer un service :
+## Diagnostiquer un service :
+
 - trouver le nom du service avec systemctl
 - regarder l’état du service avec systemctl status
 - regarder les logs du services avec journalctl -u
@@ -58,11 +65,11 @@ ss -nplt | grep ssh
 reload nomservice : creer un nouveau processus
 restart nom service : tue le processus existant et le redemare
 
-creer un service :
+## Creer un service :
+
 sudo ./svc.sh install
+
 grep -i user /etc/systemd/system/actions.runner.O-clock-Hati-challenge-s06-e02-MelkiBenjamin.melkibenjamin-server.service
 systemctl status actions.runner.O-clock-Hati-challenge-s06-e02-MelkiBenjamin.melkibenjamin-server.service : pour voir 
 systemctl start actions.runner.O-clock-Hati-challenge-s06-e02-MelkiBenjamin.melkibenjamin-server.service : pour demarer
 systemctl start (nomservice)
-
-faire un runner dans github copier coller
