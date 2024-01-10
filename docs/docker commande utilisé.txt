@@ -1,0 +1,8 @@
+docker run -it nomdconteneur /bin/bash : creer image et conteneur et le lance
+docker run --rm -it ubuntu /bin/bash : telecharge image et creer conteneur ubuntu et le lance
+et le suprime a l'exit
+
+docker exec -it nomconteneur /bin/bash : lance le terminal de conteneur deja demarrer
+docker exec -it ubuntu /bin/bash :lance le terminal de ubuntu deja demarrer
+
+docker run -dit -p 8080:80 -v httpd:2.4
