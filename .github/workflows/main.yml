@@ -1,0 +1,33 @@
+name: build et deploiement site aws
+on: [push, workflow_dispatch]
+
+jobs:
+    build:
+        runs-on: self-hosted
+        steps:
+        - name: checkout
+          uses: actions/checkout@v4
+
+        - name: date
+          run: date
+
+        - name: install nodejs
+          uses: actions/setup-node@v4
+          with:
+            node-version: 20.11
+
+        - name: install mkdocs
+          run: pip install -r requirements.txt
+
+        - name: build test
+          run: npm run build
+
+    deploiement:
+        runs-on: self-hosted
+        steps:
+        - name: deploiement
+          run: aws s3 sync s3://benjaminmelki-test/
+
+        - name: site adresse
+          run: echo http://benjaminmelki-test.s3-website.eu-west-3.amazonaws.com
+        needs: build
