@@ -16,13 +16,13 @@ jobs:
           with:
             node-version: 20.11
 
-        - name: install mkdocs
-          run: pip install -r requirements.txt
+        - name: install docusaurus
+          run: npm install -r requirements.txt
 
         - name: build test
           run: npm run build
 
-    deploiement:
+    deploiement:ls
         runs-on: self-hosted
         steps:
         - name: deploiement
