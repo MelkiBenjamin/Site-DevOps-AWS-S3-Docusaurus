@@ -1,5 +1,7 @@
 name: build et deploiement site aws
-on: [push, workflow_dispatch]
+on: 
+#  push:
+  workflow_dispatch:
 
 jobs:
     build:
@@ -22,7 +24,7 @@ jobs:
         - name: build test
           run: npm run build
 
-    deploiement:ls
+    deploiement:
         runs-on: self-hosted
         steps:
         - name: deploiement
